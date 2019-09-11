@@ -1,12 +1,12 @@
 # gibbonFileCleanup
-This module list all files in the upload folder and check the usage in the database.  
-NOTE: The list of check in database is incomplete. You may add the list in z-fileclean-ajax.php
+This module lists all files in the upload folder and check the usage in the database.  
+NOTE: The list of checks in database is incomplete. You may add to the list in z-fileclean-ajax.php
 
 ## Instruction
 Warning: Please backup data before using this tool.
 
 1. Select the year and month to list files uploaded during the period of time
-2. Wait for the list to process. Some folder might take longer depending on number of files.
+2. Wait for the list to process. Some folders might take longer depending on number of files.
 3. Copy NA to clipboard.
 4. Go to phpmyadmin -> select your database -> search -> paste into search -> Select all tables. -> Go  
  (Consider dividing the list in text editor to process as longer list would take a much longer time)
