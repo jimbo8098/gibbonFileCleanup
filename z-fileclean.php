@@ -4,14 +4,14 @@
  */
 
 
-if (isActionAccessible($guid, $connection2,"/modules/FileCleanup/z-fileclean.php")==FALSE) {
+if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.php")==FALSE) {
     //Acess denied
     print "<div class='error'>" ;
     print "You do not have access to this action." ;
     print "</div>" ;
 } else {
     echo "<h3>File List</h3>";
-    if($_GET['path']){
+    if(isset($_GET['path'])){
         if(strpos($_GET['path'],"..")!== false) {
             print "<div class='error'>";
             print "Something went wrong. Please contact system admin.";
