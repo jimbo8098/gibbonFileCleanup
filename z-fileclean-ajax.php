@@ -18,6 +18,13 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
 // Gibbon system-wide include
+if($_SERVER['HTTP_REFERER'] == null)
+{
+    //This request has been done directly, immediately exit
+    echo "Direct AJAX calls not allowed";
+    exit(401);
+}
+
 require_once '../../gibbon.php';
 
 if (isActionAccessible($guid, $connection2, '/modules/File Cleanup/z-fileclean.php') == false) {
