@@ -49,6 +49,26 @@ if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.ph
 
 }
 
+//Using fileIsValid, return an array with only the valid files
+function validFilesFromArray($fileArr)
+{
+    $resultArr = [];
+    foreach($fileArr as $file)
+    {
+        if(fileIsValid($file))
+        {
+           array_push($resultArr,$file); 
+        }
+    }
+    return $resultArr;
+}
+
+//Returns true if the file is not one of the protected file names
+function fileIsValid($value)
+{
+    return !in_array($value,array(".","..",".htaccess","cache","web.config"));
+}
+
 function dirToArray($dir,$level=2) {
 
     $result = array();
@@ -56,14 +76,17 @@ function dirToArray($dir,$level=2) {
     $cdir = scandir($dir);
     foreach ($cdir as $key => $value)
     {
-        if (!in_array($value,array(".","..",".htaccess","cache")))
+        if (fileIsValid($value))
         {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value) && $level>0)
             {
-                    $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value,$level-1);
+                //Value is a directory, check if it has anything within
+                echo "Dirsize of [" . $dir . DIRECTORY_SEPARATOR . $value . "] is [" . sizeof(validFilesFromArray(scandir($dir . DIRECTORY_SEPARATOR . $value))) . "]";
+                $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value,$level-1);
             }
             else
             {
+                //Value is a file
                 $result[] = $value;
             }
         }
@@ -90,7 +113,7 @@ function listDirectory($arr){
     }
     else
     {
-        echo "No years found";
+        echo "No years/months found";
     }
 }
 
