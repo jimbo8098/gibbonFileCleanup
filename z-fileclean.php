@@ -22,79 +22,11 @@ if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.ph
         echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='hideNA()'>Toggle NA</button>&emsp;";
         echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='cpNA()'>Copy NA to clipboard</button>&emsp;";
         echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='hideDone()'>Toggle not-NA</button><br><br>";
-        echo "<span class='loading lds-dual-ring'></span>
-            <style>.lds-dual-ring {
-                      display: inline-block;
-                      width: 64px;
-                      height: 64px;
-                    }
-                    .lds-dual-ring:after {
-                      content: \" \";
-                      display: block;
-                      width: 46px;
-                      height: 46px;
-                      margin: 1px;
-                      border-radius: 50%;
-                      border: 5px solid #fff;
-                      border-color: black transparent black transparent;
-                      animation: lds-dual-ring 1.2s linear infinite;
-                    }
-                    @keyframes lds-dual-ring {
-                      0% {
-                        transform: rotate(0deg);
-                      }
-                      100% {
-                        transform: rotate(360deg);
-                      }
-                    }
-            </style>";
+        echo "<span class='loading lds-dual-ring'></span>";
+        
+        //Set the module URL in module.js
+        echo "<script type='text/javascript'>ajaxUrl = '" . $_SESSION[$guid]['absoluteURL'] . "/modules/" . $_SESSION[$guid]['module'] . "/z-fileclean-ajax.php';</script>";
         arrayFilter(dirToArray("uploads/".$_GET['path']),$connection2);
-        echo '<script>
-            jQuery(window).load(function () {
-                $(".actionBtn").hide();
-                chkFile();
-            });
-    
-            function chkFile(){
-                    $.ajax({
-                        method: "POST",
-                        url: "' . $_SESSION[$guid]['absoluteURL'] . '/modules/' . $_SESSION[$guid]['module'] . '/z-fileclean-ajax.php",
-                        data: { chkFile: $(".chkFile").first().prev().html() },
-                    }).done(function( msg ) {
-                        $(".chkFile").first().html(msg).removeClass("chkFile").addClass(msg=="NA"?"na":"done");
-                        if($(".chkFile").length){
-                            setTimeout(chkFile(),50);
-                        }else{
-                            $(".loading").html("Done.").removeClass("lds-dual-ring");
-                            $(".actionBtn").show();
-                        }
-                    });
-                }
-    
-            function hideDone(){
-                $(".done").parent().toggle();
-            }
-            function hideNA(){
-                $(".na").parent().toggle();
-            }
-            function cpNA(){
-                var tmp="";
-                $(".na").each((i,e)=>{
-                    tmp+=$(e).prev().html()+" ";
-                });
-                copyToClipboard(tmp);
-            }
-            function copyToClipboard(tmptxt) {
-              var $temp = $("<input>");
-              $("body").append($temp);
-              $temp.val(tmptxt).select();
-              document.execCommand("copy");
-              $temp.remove();
-            }
-            function backToList(){
-                window.location.href = window.location.href.substring(0,window.location.href.indexOf("&path"));
-            }
-        </script>';
     }else{
         ?>
         <p class="text-red-700 font-bold">Warning: Please backup data before using this tool.</p>
@@ -141,18 +73,25 @@ function dirToArray($dir,$level=2) {
 }
 
 function listDirectory($arr){
-    echo "<style>ul.listd>li>ul>li{display:inline-block;width:50px;}</style>";
-    echo "<ul class='listd'>";
-    foreach($arr as $ykey=>$year) {
-        echo "<li>$ykey<ul>";
-        foreach ($year as $mkey => $month) {
-            $fp = $ykey . "/" . $month;
-            echo "<li><button class='rounded py-2 px-4' onclick='window.location+=\"&path=$fp\"'>$month</button></li>";
+    if(sizeof($arr) > 0)
+    {
+        echo "<style>ul.listd>li>ul>li{display:inline-block;width:50px;}</style>";
+        echo "<ul class='listd'>";
+        foreach($arr as $ykey=>$year) {
+            echo "<li>$ykey<ul>";
+            foreach ($year as $mkey => $month) {
+                $fp = $ykey . "/" . $month;
+                echo "<li><button class='rounded py-2 px-4' onclick='window.location+=\"&path=$fp\"'>$month</button></li>";
 
+            }
+            echo "</ul></li>";
         }
-        echo "</ul></li>";
+        echo "</ul>";
     }
-    echo "</ul>";
+    else
+    {
+        echo "No years found";
+    }
 }
 
 function arrayFilter($arr,$dbh){
