@@ -43,14 +43,14 @@ if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.ph
                 eg: cd /var/www/;rm uploads/2017/04/1.docx uploads/2017/04/2.docx</li>
         </ul><br>
         <?php
-        listDirectory(dirToArray('uploads',1));
+        listDirectory(dirToArray('uploads',2));
     }
 
 
 }
 
 //Using fileIsValid, return an array with only the valid files
-function validFilesFromArray($fileArr)
+function validObjectsFromArray($fileArr)
 {
     $resultArr = [];
     foreach($fileArr as $file)
@@ -72,8 +72,7 @@ function fileIsValid($value)
 function dirToArray($dir,$level=2) {
 
     $result = array();
-
-    $cdir = scandir($dir);
+    $cdir = validObjectsFromArray(scandir($dir));
     foreach ($cdir as $key => $value)
     {
         if (fileIsValid($value))
@@ -90,21 +89,7 @@ function dirToArray($dir,$level=2) {
             }
         }
     }
-    
-    //Now cleanups empty directories within the results array
-    //Since we can't modify the array in place, we move contents of the array to finalres
-    $finalres = [];
-    foreach($result as $year)
-    {
-        foreach($year as $month)
-        {
-            if(sizeof($month) > 0)
-            {
-                $finalRes[$year] = $month;
-            }
-        }
-    }
-    return $finalres;
+    return $result;
 }
 
 function listDirectory($arr){
@@ -114,9 +99,9 @@ function listDirectory($arr){
         echo "<ul class='listd'>";
         foreach($arr as $ykey=>$year) {
             echo "<li>$ykey<ul>";
-            foreach ($year as $mkey => $month) {
-                $fp = $ykey . "/" . $month;
-                echo "<li><button class='rounded py-2 px-4' onclick='window.location+=\"&path=$fp\"'>$month</button></li>";
+            foreach ($year as $mkey => $monthContents) {
+                $fp = $ykey . "/" . $mkey;
+                echo "<li><button class='rounded py-2 px-4' onclick='window.location+=\"&path=$fp\"'>$mkey</button></li>";
 
             }
             echo "</ul></li>";
