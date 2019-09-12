@@ -29,11 +29,11 @@ if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.ph
         arrayFilter(dirToArray("uploads/".$_GET['path']),$connection2);
     }else{
         ?>
-        <p class="text-red-700 font-bold">Warning: Please backup data before using this tool.</p>
+        <p class="text-red-700 font-bold">Warning: Please backup your uploads folder and MySQL database before using this tool.</p>
         <ul class="list-decimal">
-            <li>Select the year and month to list files uploaded during the period of time</li>
-            <li>Wait for the list to process. Some folder might take longer depending on number of files.</li>
-            <li>Copy NA to clipboard.<br></li>
+            <li>Select the year and month in the list below to list files uploaded during that period of time</li>
+            <li>Wait for the list to process. Some folders may take longer depending on the number of files.</li>
+            <li>Copy the orphaned files to your computer's clipboard.<br></li>
             <li>Go to phpmyadmin -> select your database -> search -> paste into search -> Select all tables. -> Go<br>
                 (Consider dividing the list in text editor to process as longer list would take a much longer time)</li>
             <li>If search returns with result, you may add the table and column into the z-fileclean-ajax.php( under function searchDB )</li>
@@ -80,8 +80,7 @@ function dirToArray($dir,$level=2) {
         {
             if (is_dir($dir . DIRECTORY_SEPARATOR . $value) && $level>0)
             {
-                //Value is a directory, check if it has anything within
-                echo "Dirsize of [" . $dir . DIRECTORY_SEPARATOR . $value . "] is [" . sizeof(validFilesFromArray(scandir($dir . DIRECTORY_SEPARATOR . $value))) . "]";
+                //Value is a directory, throw it's contents into the result array
                 $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value,$level-1);
             }
             else
@@ -91,8 +90,21 @@ function dirToArray($dir,$level=2) {
             }
         }
     }
-
-    return $result;
+    
+    //Now cleanups empty directories within the results array
+    //Since we can't modify the array in place, we move contents of the array to finalres
+    $finalres = [];
+    foreach($result as $year)
+    {
+        foreach($year as $month)
+        {
+            if(sizeof($month) > 0)
+            {
+                $finalRes[$year] = $month;
+            }
+        }
+    }
+    return $finalres;
 }
 
 function listDirectory($arr){
@@ -113,7 +125,7 @@ function listDirectory($arr){
     }
     else
     {
-        echo "No years/months found";
+        echo "No years/months found with orphaned files!";
     }
 }
 
