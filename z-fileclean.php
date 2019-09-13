@@ -33,14 +33,30 @@ if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.ph
         <ul class="list-decimal">
             <li>Select the year and month in the list below to list files uploaded during that period of time</li>
             <li>Wait for the list to process. Some folders may take longer depending on the number of files.</li>
-            <li>Copy the orphaned files to your computer's clipboard.<br></li>
+            <li>Copy the orphaned files to your computer's clipboard. This copies the absolute path fo the files as a list.<br></li>
             <li>Go to phpmyadmin -> select your database -> search -> paste into search -> Select all tables. -> Go<br>
-                (Consider dividing the list in text editor to process as longer list would take a much longer time)</li>
+                (Consider dividing the list in your favourite text editor to process as a longer list would take a much longer time)</li>
             <li>If search returns with result, you may add the table and column into the z-fileclean-ajax.php( under function searchDB )</li>
             <li>Repeat again until there's no result in the search</li>
-            <li>Once you are sure that the list of NA is not attributed to any data, you may delete the files.</li>
-            <li>Through linux terminal/SSH, you may CD to the root installation of Gibbon and run RM with the list.<br>
-                eg: cd /var/www/;rm uploads/2017/04/1.docx uploads/2017/04/2.docx</li>
+            <li>Once you are sure that the all of the orphaned files are not attributed to any data, you may delete them. Depending on your operating system, use the below to delete the files:<br/>
+                <ul>
+                    <li>
+                        <b>Linux/MacOS:</b>
+                        <pre>
+                            <?php echo "cd " . getcwd(); ?><br/>
+                            rm uploads\2017\04\1.docx uploads\2017\04\2.docx
+                        </pre>
+                    </li>
+                    <li>
+                        <b>Windows</b>
+                        <br/>
+                        <pre>
+                            <?php echo "cd " . getcwd(); ?><br/>
+                            del /Q uploads\2017\04\1.docx uploads\2017\04\2.docx
+                        </pre> 
+                    </li>
+                </ul>
+            </li>
         </ul><br>
         <?php
         listDirectory(dirToArray('uploads',2));
