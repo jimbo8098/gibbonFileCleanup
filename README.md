@@ -1,17 +1,23 @@
-# gibbonFileCleanup
-This module lists all files in the upload folder and check the usage in the database.  
-NOTE: The list of checks in database is incomplete. You may add to the list in z-fileclean-ajax.php
+# Gibbon File Cleanup Module
+This module allows you to list all files in the upload folder. From this list, you can run a number of searches to find out which resources are in use and which aren't.
 
-## Instruction
-Warning: Please backup data before using this tool.
+NOTE: The list of tables checked is incomplete. You may add the table and column to the list in z-fileclean-ajax.php
 
-1. Select the year and month to list files uploaded during the period of time
-2. Wait for the list to process. Some folders might take longer depending on number of files.
-3. Copy NA to clipboard.
-4. Go to phpmyadmin -> select your database -> search -> paste into search -> Select all tables. -> Go  
- (Consider dividing the list in text editor to process as longer list would take a much longer time)
-5. If search returns with result, you may add the table and column into the z-fileclean-ajax.php( under function searchDB )
-6. Repeat again until there's no result in the search
-7. Once you are sure that the list of NA is not attributed to any data, you may delete the files.
-8. Through linux terminal/SSH, you may CD to the root installation of Gibbon and run RM with the list.  
-eg: cd /var/www/;rm uploads/2017/04/1.docx uploads/2017/04/2.docx
+## Requirements/Prerequisites
+
+This tool has been tested on Debian Buster. In theory it should work with Windows OSes but there are some known compatibility issues on MAC OSX which are referenced in GibbonEdu's Slack during testing. 
+
+The tool also assumes that you have PHP My Admin installed. Manual searches on the data are possible though the process will take much longer and there are no instructions for this.
+
+## Installation
+
+1. [Download this repo](https://github.com/jian118/gibbonFileCleanup/archive/master.zip) or clone it:
+```
+git clone git@github.com:jian118/gibbonFileCleanup.git
+```
+2. Unzip the file either using an archive tool such as unzip (Linux) or WinZip (Windows).
+3. Once you have a copy, open the folder and move the contents to the Gibbon modules directory (Gibbon root /modules). The folder you move should be named "File Cleanup".
+4. Log into Gibbon as an administrator then go to Admin > System Admin > Manage Modules. At the bottom of the list, you should see an entry for "File Cleanup". Click the "Add" (plus icon) button and the module will be installed.
+
+## Usage
+Go to Admin > File Cleanup as a Gibbon adminstrator.
