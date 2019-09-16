@@ -4,6 +4,8 @@
  */
 
 
+//Set the module URL in module.js
+echo "<script type='text/javascript'>ajaxUrl = '" . $_SESSION[$guid]['absoluteURL'] . "/modules/" . $_SESSION[$guid]['module'] . "/z-fileclean-ajax.php';</script>";
 if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.php")==FALSE) {
     //Acess denied
     print "<div class='error'>" ;
@@ -19,13 +21,11 @@ if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.ph
             exit();
         }
         echo "<button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='backToList()'>Back to Folder List</button>&emsp;";
-        echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='hideNA()'>Toggle NA</button>&emsp;";
-        echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='cpNA()'>Copy NA to clipboard</button>&emsp;";
-        echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='hideDone()'>Toggle not-NA</button><br><br>";
+        echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='hideNA()'>Show/Hide File Paths</button>&emsp;";
+	echo "<button class='actionBtn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onclick='cpNA()'>Copy File Paths to Clipboard</button>&emsp;";
+	echo "<br/><br/>";
         echo "<span class='loading lds-dual-ring'></span>";
         
-        //Set the module URL in module.js
-        echo "<script type='text/javascript'>ajaxUrl = '" . $_SESSION[$guid]['absoluteURL'] . "/modules/" . $_SESSION[$guid]['module'] . "/z-fileclean-ajax.php';</script>";
         arrayFilter(dirToArray("uploads/".$_GET['path']),$connection2);
     }else{
         ?>
@@ -131,7 +131,7 @@ function listDirectory($arr){
 }
 
 function arrayFilter($arr,$dbh){
-    echo "<table>";
+    echo "<table style='margin:10px;'>";
     foreach($arr as $key=>$file){
         $fp = "uploads/" . $_GET["path"] . "/" . $file;
         echo "<tr>";
