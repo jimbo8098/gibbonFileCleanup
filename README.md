@@ -1,13 +1,15 @@
 # Gibbon File Cleanup Module
-This module allows you to list all files in the upload folder. From this list, you can run a number of searches to find out which resources are in use and which aren't.
+This module allows you to list all unused files in the upload folder. From this list, you can run a number of searches to find out where the unused resources are referenced in code then remove the files.
 
 NOTE: The list of tables checked is incomplete. You may add the table and column to the list in z-fileclean-ajax.php
 
-## Requirements/Prerequisites
+## Foreword
 
 This tool has been tested on Debian Buster. In theory it should work with Windows OSes but there are some known compatibility issues on MAC OSX which are referenced in GibbonEdu's Slack during testing. 
 
 The tool also assumes that you have PHP My Admin installed. Manual searches on the data are possible though the process will take much longer and there are no instructions for this.
+
+The tool does not scan plugin file usage, that would quickly become a task in itself!
 
 ## Installation
 
