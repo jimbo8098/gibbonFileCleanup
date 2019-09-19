@@ -25,9 +25,6 @@ function chkFile(){
 function hideDone(){
     $(".done").parent().toggle();
 }
-function hideNA(){
-    $(".na").parent().toggle();
-}
 function cpNA(){
     var tmp="";
     $(".na").each((i,e)=>{
