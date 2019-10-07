@@ -6,6 +6,10 @@ jQuery(window).load(function () {
     chkFile();
 });
 
+function hideNA() {
+    $('.na').parent().toggle();
+}
+
 function chkFile(){
         $.ajax({
             method: "POST",
@@ -24,9 +28,6 @@ function chkFile(){
 
 function hideDone(){
     $(".done").parent().toggle();
-}
-function hideNA(){
-    $(".na").parent().toggle();
 }
 function cpNA(){
     var tmp="";

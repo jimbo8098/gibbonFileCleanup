@@ -6,6 +6,7 @@
 
 //Set the module URL in module.js
 echo "<script type='text/javascript'>ajaxUrl = '" . $_SESSION[$guid]['absoluteURL'] . "/modules/" . $_SESSION[$guid]['module'] . "/z-fileclean-ajax.php';</script>";
+
 if (isActionAccessible($guid, $connection2,"/modules/File Cleanup/z-fileclean.php")==FALSE) {
     //Acess denied
     print "<div class='error'>" ;
@@ -109,22 +110,27 @@ function dirToArray($dir,$level=2) {
 }
 
 function listDirectory($arr){
-    if(sizeof($arr) > 0)
+    $yearsShown = 0;
+    if(is_array($arr) && sizeof($arr) > 0)
     {
         echo "<style>ul.listd>li>ul>li{display:inline-block;width:50px;}</style>";
         echo "<ul class='listd'>";
         foreach($arr as $ykey=>$year) {
-            echo "<li>$ykey<ul>";
-            foreach ($year as $mkey => $monthContents) {
-                $fp = $ykey . "/" . $mkey;
-                echo "<li><button class='rounded py-2 px-4' onclick='window.location+=\"&path=$fp\"'>$mkey</button></li>";
+            if(is_array($year))
+            {
+                echo "<li>$ykey<ul>";
+                foreach ($year as $mkey => $monthContents) {
+                    $fp = $ykey . "/" . $mkey;
+                    echo "<li><button class='rounded py-2 px-4' onclick='window.location+=\"&path=$fp\"'>$mkey</button></li>";
 
+                }
+                echo "</ul></li>";
+                $yearsShown++;
             }
-            echo "</ul></li>";
         }
         echo "</ul>";
     }
-    else
+    if($yearsShown == 0) //Sometimes empty folders may exist in the uploads directory, hence the int
     {
         echo "No years/months found with orphaned files!";
     }
